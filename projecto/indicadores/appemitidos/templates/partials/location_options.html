@@ -1,0 +1,24 @@
+
+{% if level == "1" or level == 1 %}
+  <option value="">Todos</option>
+{% elif level == "2" or level == 2 %}
+  <option value="">Todos</option>
+{% elif level == "3" or level == 3 %}
+  <option value="">Todos</option>
+{% elif level == "4" or level == 4 %}
+  <option value="">Todos</option>
+{% elif level == "5" or level == 5 %}
+  <option value="">Todos</option>
+{% elif level == "6" or level == 6 %}
+  <option value="">Todos</option>
+{% elif level == "7" or level == 7 %}
+  <option value="">Todos</option>
+{% else %}
+  <option value="">Todos</option>
+{% endif %}
+
+{% for loc in children %}
+  <option value="{{ loc.id }}" data-level="{{ loc.level }}">{{ loc.name }}</option>
+{% empty %}
+  <option value="">No hay opciones</option>
+{% endfor %}

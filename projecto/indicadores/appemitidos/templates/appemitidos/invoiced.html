@@ -1,0 +1,166 @@
+{% extends "basefilter.html" %}
+
+{% block filter_content %}
+<html>
+  <body>
+    <div class="container">
+      <h3 class="mb-3"><i class="bi bi-bar-chart"></i>Facturado por periodos</h3>
+      
+      <div class="d-flex justify-content-end mb-2" id="filtersModal">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filtersModal">
+          <i class="bi bi-funnel"></i> Filtros
+        </button>
+      </div>
+
+      <div class="contenedor-3d">
+        <span class="etiqueta-borde">Parámetros</span>
+        <!-- <p>Este es el contenido dentro del contenedor.</p> -->
+         <div class="">
+          <!-- <label for="agrouptype" class="form-label">Periodo</label> -->
+          <div id="agrouptype_div" class="d-flex flex-wrap gap-3">
+            {% for grouptype in groupingtype %}
+              <div class="myClass">
+                <input class="form-check-input" type="radio" name="agrouptype" id="agrouptype_{{ forloop.counter }}" value="{{ grouptype }}" {% if forloop.first %}checked{% endif %} onchange="locgraficarDatos()">
+                <label class="form-check-label" for="agrouptype_{{ forloop.counter }}">
+                  {{ grouptype }}
+                </label>
+              </div>
+            {% endfor %}
+
+            <div class="myCombo">
+              <select class="form-select" id="typedocument" onchange="locgraficarDatos()">
+                  {% for code, label in typedocuments %}
+                    <option value="{{ code }}">{{ label }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Datos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Gráfico</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+          <table class="table table-bordered table-hover align-middle text-center mt-3">
+              <thead id="tabla-encabezado" class="">
+                <tr>
+                  <th>Mes</th>
+                  <th>Subtotal</th>
+                  <th>IVA</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-datos" class="table-group-divider">
+              </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+          <div class="myObjectDiv">
+            <div class="myObject">
+              <select class="form-select" id="tipografico" onchange="locgraficarDatos()">
+                  {% for typegrp in typegraph %}
+                    <option value="{{ typegrp }}">{{ typegrp }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="grafico_cnv"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="detailsModalLabel">Detalles</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-sm">
+              <thead class="">
+                <tr>
+                  <th class="myfontCenter">Año</th>
+                  <th class="myfontCenter">Subtotal</th>
+                  <th class="myfontCenter">Iva</th>
+                  <th class="myfontCenter">Total</th>
+                </tr>
+              </thead>
+              <tbody id="detailsBody">
+                <tr><td colspan="4" class="text-muted">Selecciona un mes para ver detalles</td></tr>
+              </tbody>
+              <tfoot class="table-secondary fw-bold" id="detailsFooter">
+                <tr>
+                  <td>TOTALES</td>
+                  <td id="totalSubtotal" class="myfontRight">0.00</td>
+                  <td id="totalIva" class="myfontRight">0.00</td>
+                  <td id="totalGeneral" class="myfontRight">0.00</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  {% load static %}
+  <script src="{% static 'js/invoiced.js' %}"></script>
+</html>
+
+
+<script>
+  async function LoadStarParametersLOC() {
+    await LoadStarParameters();
+    locgraficarDatos();
+  }
+
+  document.addEventListener('DOMContentLoaded', LoadStarParametersLOC);
+
+  document.addEventListener("filters:ready", (event) => {
+    const filters = event.detail;
+    // Convierte arrays a strings si es necesario
+    glb_chkyears = filters.years.join(",");
+    glb_chkmonths = filters.months.join(",");
+    glb_params = new URLSearchParams(filters.locations).toString();
+    glb_locationFiltersText = Object.values(filters.locations).join(" / ");
+    
+    if (typeof graficarDatos === "function") {
+      miGrafico = graficarDatos(glb_chkyears, glb_chkmonths, glb_params, glb_locationFiltersText);
+    } else {
+      console.error("⚠️ graficarDatos() no está definida aún.");
+    }
+  });
+  
+  async function locgraficarDatos() {
+    if (glb_chkyears && glb_chkmonths) {
+      
+      const ptbody = document.getElementById('tabla-datos');
+      const phead = document.getElementById('tabla-encabezado');
+      const agrouptype = document.querySelector('input[name="agrouptype"]:checked').value;
+      const typegra = document.getElementById('tipografico').value;
+      const typedpcument = document.getElementById('typedocument').value;
+      
+      glb_data = await cargarFacturasBD(glb_chkmonths, glb_chkyears, ptbody, phead, agrouptype, typedpcument, glb_params)
+
+      graficarSales("grafico_cnv", glb_data, typegra, agrouptype);
+    } else {
+      console.warn("⚠️ Años o meses no están definidos. No se puede graficar.");
+    }
+  }
+
+  async function graficarDatos(chkyears, chkmonths, params, locationFiltersText) {
+    glb_chkyears = chkyears.split(',').filter(y => /^\d+$/.test(y)).join(',');
+    glb_chkmonths = chkmonths.split(',').filter(m => /^\d+$/.test(m) && parseInt(m, 10) > 0).join(',');
+    await locgraficarDatos();
+  }
+</script>
+{% endblock %}

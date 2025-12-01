@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Emitidos{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>Datos desde CSV</title>
+    
+</head>
+<body>
+    <form action="">
+        
+         <div class="row mb-3">
+            <div class="col-md-3">
+                <label>Año</label>
+                <select class="form-select" id="año" onchange="cargarDatos()">
+                     <option value="" selected>--Seleccione--</option>
+                    {% for a in years %}
+                        <option value="{{ a }}">{{ a }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Mes</label>
+                <select class="form-select" id="mes" onchange="cargarDatos()">
+                    {% for num, nombre in months %}
+                        <option value="{{ num }}">{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <table id="emitidos-table" class="table table-light table-striped" style="width:90%">
+            <thead>
+                <tr class="table-dark">
+                    <th>RUC</th>
+                    <th>Razón Social</th>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Emitidos</th>
+                </tr>
+            </thead>
+            <tbody id ="tabla-datos" >
+                <!-- {% for dat in data %}
+                    <tr>
+                        <td>{{ dat.partner.identification }}</td>
+                        <td>{{ dat.partner_name }}</td>
+                        <td>{{ dat.year }}</td>
+                        <td>{{ dat.month }}</td>
+                        <td>{{ dat.issued }}</td>
+                    </tr>
+                {% endfor %} -->
+            </tbody>
+            
+        </table>
+        <div class="mt-5">
+            <h4>Gráfica: Total Emitidos</h4>
+            <canvas id="grafico-emitidos" height="100"></canvas>
+        </div>
+    </form>
+</body>
+</html>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/graficos.js"></script>
+
+<script>
+    let tabla = null;
+    let grafico = null;  // variable global (fuera de la función) para destruir si ya existe
+
+    async function cargarDatos() {
+        const año = document.getElementById('año').value;
+        const mes = document.getElementById('mes').value;
+        const response = await fetch(`/dataobtained/${año}/${mes}/`);
+        const data = await response.json();
+        // Destruir instancia anterior de DataTable
+        if (tabla) {
+            tabla.destroy();
+        }
+
+        const tbody = document.getElementById('tabla-datos');
+        tbody.innerHTML = '';
+        const labels = [];
+        const valores = [];
+
+        data.forEach(item => {
+            const row = `
+                <tr>
+                    <td>${item.partner_ruc}</td>
+                    <td>${item.partner_name}</td>
+                    <td>${item.year}</td>
+                    <td>${item.month}</td>
+                    <td>${item.issued}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+
+        /* if (data.resultados.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center">No hay datos</td></tr>';
+        } else {
+            data.resultados.forEach(reg => {
+                const fila = `
+                    <tr>
+                        <td>${reg.partner_ruc}</td>
+                        <td>${reg.partner_name}</td>
+                        <td>${reg.year}</td>
+                        <td>${reg.month}</td>
+                        <td>${reg.issued}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += fila;
+
+                // ¡AQUÍ ES DONDE AÑADES LOS DATOS PARA EL GRÁFICO!
+                // Supongamos que quieres partner_name como etiqueta y issued como valor
+                labels.push(reg.partner_name); // O reg.month, reg.year, etc., según lo que quieras en el eje X
+                valores.push(reg.issued);
+            });
+        } */
+
+        // Volver a inicializar DataTable
+        tabla = new DataTable('#emitidos-table', {
+            dom: '<"row mb-2"<"col-md-6"l><"col-md-6 text-end"B>>frtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],  // opciones del selector
+            pageLength: 10,      // valor inicial
+            buttons: ['copy', 'csv', 'excel', 'print'],
+            language: {
+                url: '/static/js/es-ES.json' // Ajusta esta ruta a donde guardaste el archivo
+            }
+        });
+
+        graficar('grafico-emitidos', labels, valores)
+    }
+
+    // Cargar al abrir la página
+    document.addEventListener('DOMContentLoaded', cargarDatos);
+</script>
+{% endblock %}

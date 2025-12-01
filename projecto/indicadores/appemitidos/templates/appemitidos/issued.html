@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Emitidos{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    
+</head>
+<body>
+    <h1>Datos cargados desde CSV</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table border="1">
+            <thead>
+                <tr>
+                {% for header in headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        {% for cell in row %}
+                            <td>
+                                <input type="text" name="data_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" value="{{ cell }}">
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,242 @@
+.multi-select {
+    width: 50%;
+}
+
+.select-box{
+    position: relative;
+}
+
+.select-multiple{
+    width: 100%;
+    padding: .555rem .85rem;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.5;
+    color: black;
+    background-color: white;
+    border: 1px solid rgb(168, 165, 165);
+    border-radius: 5px;
+}
+
+.over-select{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.colors-checks{
+    display: none;
+    border: 1px solid rgb(168, 165, 165);
+}
+
+.colors-checks label{
+    display: block;
+}
+
+.colors-checks label:hover{
+    background-color: #1e90ff;
+}
+
+.form-control-color{
+    margin: 0.75rem;
+    width: 20px;
+    height: 20px;
+}
+
+.mycontainer{
+    width: 80%;
+    height: 50%;
+    /* height: auto;
+    margin: 20px 0 0 0;
+    display: flex; */
+    align-items: flex-start; /* ⬅️ Esto alinea a la izquierda */
+    /*margin-top: 5px;*/
+}
+
+.mycanvas{
+    width: 70%;
+    height: 70%;
+    /* margin-top: 5px; */
+}
+
+.myclss{
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 1%;
+}
+
+.myclssall{
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 1%;
+    width: 100%;
+    height: 10%;
+}
+
+.myclss_with_col {
+    width: 100%;
+}
+
+.myclss_with_chk {
+    width: 140px;
+}
+
+.myclss_with_chk:hover {
+    transform: translateY(-2px);
+    border-radius: 4px;
+    width: 120px;
+    box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: #e5e7e9;
+    transition: background-color 0.3s ease; 
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.cabecera {
+    height: 5vh;
+    background-color: #0d6efd;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenido {
+    height: 95vh;
+}
+
+.panel-izquierdo {
+    width: 5%;
+    height: 100%;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+}
+
+.panel-derecho {
+    width: 95%;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.fila-sin-margen {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.myfont {
+    font-family: 'Arial', sans-serif;
+    font-size: 15px; /* Tamaño de fuente */
+    color: #f50707;
+}
+
+.myfontTitle {
+    font-family: 'Arial', sans-serif;
+    font-size: 17px; /* Tamaño de fuente */
+    color: #4302f5;
+    font-weight: bold;
+}
+
+.myfontRight {
+    text-align: right;
+}
+
+.myfontLeft {
+    text-align: left;
+}
+
+.myfontCenter {
+    text-align: center;
+}
+
+/* Aplica estilo general a la tabla */
+.tabla-3d {
+  border-collapse: separate;
+  border-spacing: 2px 3px;
+  width: 100%;
+}
+
+/* Estilo 3D para celdas */
+.tabla-3d td {
+  background-color: #f7f8f8;
+  box-shadow: 2px 2px 6px rgba(1, 252, 97, 0.2);
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto al pasar el mouse */
+/* .tabla-3d td:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.3);
+  background-color: #21b3f7;
+} */
+
+.myClass {
+    background-color: rgb(238, 240, 240);
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 150px;
+    height: 35px;
+    margin-right: 5px;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.18);
+    border-radius: 5px;
+}
+
+.myCombo {
+    margin-top: 5px;
+    width: 200px;
+    height: 30px;
+}
+
+.myObject {
+    width: 20%;
+    overflow: auto;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.myObjectDiv {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end;
+}
+
+#tablaLocalizacionesBody td {
+  vertical-align: middle;
+  border-color: #d9d9d9;
+}
+
+#tablaLocalizacionesBody td:first-child {
+  /* font-weight: 600; */
+  background-color: #f8faf8;
+}
+
+#tablaLocalizacionesBody td.text-end {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.mainBaseFilter {
+    width: 70%;
+    height: 92%;
+    background-color: rgb(238, 237, 236);
+    z-index: -9999;
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    margin-top: 1.5%;
+}

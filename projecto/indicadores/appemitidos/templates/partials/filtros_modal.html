@@ -1,0 +1,255 @@
+<div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="filtersModalLabel"><i class="bi bi-funnel"></i> Filtros</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="filtersForm">
+          <div class="contenedor">
+              <div class="columna columna-25">
+                <!-- Años -->
+                <div class="col-md-4">
+                  <label class="form-label fw-bold">Años</label>
+                  {% for a in years %}
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="years" value="{{a}}" id="year_{{a}}">
+                      <label class="form-check-label" for="year_{{a}}">{{a}}</label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <!-- Meses -->
+              <div class="columna columna-25">
+                <label class="form-label fw-bold">Meses</label>
+                {% for num, nombre in months %}
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="months" value="{{num}}" id="month_{{num}}">
+                    <label class="form-check-label" for="month_{{num}}">{{nombre}}</label>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="columna columna-50">
+                <!-- Localización -->
+                <label class="form-label fw-bold">Localización</label>
+                <div class="fila-continentes">
+                  <!-- <div class="subcolumna-25"> -->
+                    <label>Continentes</label>
+                  <!-- </div> -->
+                  <div class="subcolumna-70">
+                    <select id="continents" name="continents" class="form-select mb-2"
+                            hx-get="{% url 'children_options' %}"
+                            hx-trigger="load"
+                            hx-target="#continents"
+                            hx-swap="innerHTML"
+                            hx-vals='{"level": 1}'
+                            data-reset-targets="#countries,#regions,#provinces,#cities,#establishments,#points">
+                      <option value="">Cargando...</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="fila-continentes">
+                  <!-- <div class="subcolumna-25"> -->
+                    <label>Paises</label>
+                  <!-- </div> -->
+                  <div class="subcolumna-70">
+                    <select id="countries" name="countries" class="form-select mb-2"
+                        disabled
+                        hx-get="{% url 'children_options' %}"
+                        hx-trigger="change from:#continents"
+                        hx-target="#countries"
+                        hx-swap="innerHTML"
+                        hx-include="#continents"
+                        hx-vals='{"level": 2}'
+                        data-reset-targets="#regions,#provinces,#cities,#establishments,#points">
+                  <option value="">Todos</option>
+                </select>
+                  </div>
+                </div>
+
+                <div class="fila-continentes">
+                  <!-- <div class="subcolumna-25"> -->
+                    <label>Regiones</label>
+                  <!-- </div> -->
+                  <div class="subcolumna-70">
+                    <select id="regions" name="regions" class="form-select mb-2"
+                            disabled
+                            hx-get="{% url 'children_options' %}"
+                            hx-trigger="change from:#countries"
+                            hx-target="#regions"
+                            hx-swap="innerHTML"
+                            hx-include="#countries"
+                            hx-vals='{"level": 3}'
+                            data-reset-targets="#provinces,#cities,#establishments,#points">
+                      <option value="">Todos</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="fila-continentes">
+                  <label>Provincias</label>
+                  <select id="provinces" name="provinces" class="form-select mb-2"
+                          disabled
+                          hx-get="{% url 'children_options' %}"
+                          hx-trigger="change from:#regions"
+                          hx-target="#provinces"
+                          hx-swap="innerHTML"
+                          hx-include="#regions"
+                          hx-vals='{"level": 4}'
+                          data-reset-targets="#cities,#establishments,#points">
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+                <div class="fila-continentes">
+                  <label>Ciudades</label>
+                  <select id="cities" name="cities" class="form-select mb-2"
+                          disabled
+                          hx-get="{% url 'children_options' %}"
+                          hx-trigger="change from:#provinces"
+                          hx-target="#cities"
+                          hx-swap="innerHTML"
+                          hx-include="#provinces"
+                          hx-vals='{"level": 5}'
+                          data-reset-targets="#establishments,#points">
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+                <div class="fila-continentes">
+                  <label>Establecimientos</label>
+                  <select id="establishments" name="establishments" class="form-select mb-2"
+                          disabled
+                          hx-get="{% url 'children_options' %}"
+                          hx-trigger="change from:#cities"
+                          hx-target="#establishments"
+                          hx-swap="innerHTML"
+                          hx-include="#cities"
+                          hx-vals='{"level": 6}'
+                          data-reset-targets="#points">
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+
+                <div class="fila-continentes">
+                  <label>Puntos</label>
+                  <select id="points" name="points" class="form-select mb-2"
+                          disabled
+                          hx-get="{% url 'children_options' %}"
+                          hx-trigger="change from:#establishments"
+                          hx-target="#points"
+                          hx-swap="innerHTML"
+                          hx-include="#establishments"
+                          hx-vals='{"level": 7}'>
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="applyFiltersBtn">Aplicar</button>
+        </div>
+
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+    const form = document.getElementById('filtersForm');
+    const formData = new FormData(form);
+
+    const filters = { years: [], months: [], locations: {} };
+
+    formData.forEach((value, key) => {
+      if (key === "years") filters.years.push(value);
+      else if (key === "months") filters.months.push(value);
+      else if (["continents","countries","regions","provinces","cities","establishments", 'points'].includes(key))
+        filters.locations[key] = value;
+    });
+
+    if (filters.years.length === 0 || filters.months.length === 0) {
+      alert("Selecciona al menos un año y un mes antes de aplicar filtros.");
+      return;
+    }
+
+    console.log("📤 Enviando filtros al evento global:", filters);
+    document.dispatchEvent(new CustomEvent("filters:apply", { detail: filters }));
+
+    const modalEl = document.getElementById("filtersModal");
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+  });
+
+  document.body.addEventListener("htmx:afterSwap", (evt) => {
+    const target = evt.detail.target;
+    if (target.tagName && target.tagName.toLowerCase() === "select") {
+      const hasOptions = target.querySelectorAll("option").length > 1;
+      if (hasOptions) target.removeAttribute("disabled");
+      else target.setAttribute("disabled", "disabled");
+    }
+  });
+
+  // ============================
+  // 3️⃣ CHECKBOXES: Selección parcial
+  // ============================
+  document.addEventListener("DOMContentLoaded", function() {
+    const groups = ["years", "months"];
+
+    groups.forEach(name => {
+      const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
+      if (checkboxes.length === 0) return;
+      const master = checkboxes[0];
+
+      master.addEventListener("change", () => selectAllCheckboxes(name, master.checked));
+      checkboxes.forEach(cb => {
+        if (cb !== master) {
+          cb.addEventListener("change", () => updateMasterCheckbox(master, checkboxes));
+        }
+      });
+    });
+  });
+
+  function selectAllCheckboxes(name, selectAll) {
+    const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
+    checkboxes.forEach((checkbox, idx) => {
+      if (idx > 0) checkbox.checked = selectAll;
+    });
+  }
+
+  function updateMasterCheckbox(master, checkboxes) {
+    const total = checkboxes.length - 1;
+    const checked = Array.from(checkboxes).slice(1).filter(cb => cb.checked).length;
+
+    master.checked = checked === total;
+    master.indeterminate = checked > 0 && checked < total;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('filtersModal');
+    let initialized = false; // para no repetir la selección cada vez que se abra el modal
+
+    modal.addEventListener('shown.bs.modal', function() {
+      if (initialized) return;
+      initialized = true;
+
+      // ✅ Selecciona todos los años
+      document.querySelectorAll('input[name="years"]').forEach(cb => cb.checked = true);
+
+      // ✅ Selecciona todos los meses
+      document.querySelectorAll('input[name="months"]').forEach(cb => cb.checked = true);
+
+      // ✅ Desactiva el estado indeterminado del primero (si lo usas como "Todos")
+      const firstYear = document.querySelector('input[name="years"]');
+      const firstMonth = document.querySelector('input[name="months"]');
+      if (firstYear) firstYear.indeterminate = false;
+      if (firstMonth) firstMonth.indeterminate = false;
+    });
+  });
+</script>

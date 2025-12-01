@@ -1,0 +1,52 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Partner</th>
+      <th>Mes</th>
+      <th>Total</th>
+      <th>
+        <div class="details-container" style="display: none;">
+          Detalles
+        </div>
+      </th>
+      <th>Grand Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Empresa X</td>
+      <td>Julio</td>
+      <td>
+        <a href="#" onclick="event.preventDefault(); this.closest('tr').querySelector('.details-container').style.display = (this.closest('tr').querySelector('.details-container').style.display === 'none' ? 'block' : 'none');">
+          $1,000
+        </a>
+      </td>
+      <td>
+        <div class="details-container" style="display: none;">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Fecha</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>F001</td>
+                <td>2025-07-01</td>
+                <td>$500</td>
+              </tr>
+              <tr>
+                <td>F002</td>
+                <td>2025-07-05</td>
+                <td>$500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+      <td>$2,000</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,12 @@
+/* {
+    "python-envs.defaultEnvManager": "ms-python.python:myent",
+    "python-envs.pythonProjects": []
+}
+ */
+{
+    "python.defaultInterpreterPath": "/media/jrpm/datos/backup/implementations/python/indicadores/projecto/myent/bin/python3",
+    "python-envs.pythonProjects": [],
+    "python.analysis.extraPaths": [
+        "./projecto/indicadores/appemitidos/models"
+    ]
+}

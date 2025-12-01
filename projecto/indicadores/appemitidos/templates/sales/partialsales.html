@@ -1,0 +1,54 @@
+<table>
+    <thead>
+        <tr>
+            <th>Año</th>
+            <th>Mes</th>
+            <th>Partner</th>
+            <th>Subtotal</th>
+            <th>IVA</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in page_obj %}
+            <tr>
+                <td>{{ row.year }}</td>
+                <td>{{ row.month }}</td>
+                <td>{{ row.partner__name }}</td>
+                <td>${{ row.subtotal }}</td>
+                <td>${{ row.iva }}</td>
+                <td>${{ row.total }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6">No hay datos</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div>
+    <!-- {% if page_obj.has_previous %}
+        <a hx-get="?page={{ page_obj.previous_page_number }}" hx-target="#tabla-resumen">Anterior</a>
+    {% endif %} -->
+    
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"
+            hx-get="?page={{ page_obj.next_page_number }}"
+            hx-target="#tabla-resumen"
+            class="text-primary text-decoration-none link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            style="cursor: pointer;">
+            >>     
+        </a>
+    {% endif %}
+    <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"
+            hx-get="?page={{ page_obj.previous_page_number }}"
+            hx-target="#tabla-resumen"
+            class="text-primary text-decoration-none link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            style="cursor: pointer;">
+            <<
+        </a>
+    {% else %}
+        <span class="text-muted" style="cursor: not-allowed;"><<</span>
+    {% endif %}
+</div>

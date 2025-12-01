@@ -1,0 +1,69 @@
+/* Estilos del Contenedor Principal (div) */
+.contenedor-3d {
+    /* El borde 3D: prueba 'groove' o 'ridge' */
+    border: 2px ridge #d8d5d5; /* Grosor, estilo 3D y color */
+    padding: 10px;
+    width: 100%;
+    height: 80px;
+    position: relative; /* Es clave para posicionar la etiqueta ABSOLUTA dentro */
+    margin-top: 20px; /* Margen para verlo mejor */
+    margin-bottom: 10px; /* Margen para verlo mejor */
+}
+
+/* Estilos de la Etiqueta (span) */
+.etiqueta-borde {
+    /* Posicionamiento y color */
+    position: absolute; /* Permite posicionarla con 'top' y 'left' */
+    top: -15px; /* Mueve la etiqueta hacia arriba, sobre el borde */
+    left: 15px;
+    
+    /* Apariencia */
+    background-color: rgb(250, 246, 246); /* Para que el fondo del texto tape el borde */
+    padding: 0 10px; /* Espaciado horizontal alrededor del texto */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #0f0f0f;
+    font-size: 0.9em;
+    /* text-transform: uppercase; */
+}
+
+.contenedor {
+  display: grid;
+  /* Define las 3 columnas con sus respectivos anchos */
+  grid-template-columns: 20% 20% 59%; 
+  gap: 5px; /* Opcional: añade espacio entre las columnas */
+  width: 100%;
+}
+
+.columna {
+  /* Estilos básicos para visualizar */
+  /* background-color: #faf5f5; */
+  padding: 20px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+/* Estilo para el contenedor que tiene la etiqueta y el select */
+.fila-continentes {
+    /* display: flex; */ /* Habilita el modo Flex */
+    /* align-items: center; */ /* Opcional: Centra verticalmente el contenido */
+    /* gap: 10px; */ /* Espacio entre la etiqueta y el select */
+    /* margin-bottom: 10px; */ /* Espacio inferior para separarlo del siguiente select */
+
+
+    display: grid;
+  /* Define las 3 columnas con sus respectivos anchos */
+    grid-template-columns: 30% 70%; 
+    gap: 10px; /* Opcional: añade espacio entre las columnas */
+    width: 100%;
+    text-align: left;
+}
+
+/* Estilo para las dos subcolumnas internas */
+.fila-continentes .subcolumna {
+    /* Ocupan exactamente la mitad del contenedor (50% - 5px de gap en cada lado) */
+    background-color: #f0f0f0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    /* text-align: left; */
+}

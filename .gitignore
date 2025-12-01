@@ -1,0 +1,14 @@
+# Carpetas de entorno virtual (fundamental ignorarlas)
+myent/
+migrations/
+#env/
+
+# Archivos de caché
+__pycache__/
+*.pyc
+*.xlsx
+*.csv
+
+# Logs y bases de datos locales
+*.log
+*.db

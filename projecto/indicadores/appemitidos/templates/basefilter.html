@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="mainBaseFilter">
+    <!-- Botón para abrir modal de filtros -->
+    <button class="btn" data-bs-toggle="modal" data-bs-target="#filtersModal">
+        <i class="bi bi-funnel"></i> Filtros
+    </button>
+  </div>
+  <!-- Incluye el modal de filtros -->
+  {% include "partials/filtros_modal.html" %}
+
+  <!-- Contenido de cada página que use filtros -->
+  <div id="main-filter-content">
+      {% block filter_content %}{% endblock %}
+  </div>
+
+  <script>
+    document.addEventListener("filters:apply", function (event) {
+      const filters = event.detail;
+      console.log("📦 Filtros aplicados (capturados en basefilter):", filters);
+
+      // Despacha globalmente el evento para invoiced.html
+      const newEvent = new CustomEvent("filters:ready", { detail: filters });
+      document.dispatchEvent(newEvent);
+    });
+  </script>
+{% endblock %}

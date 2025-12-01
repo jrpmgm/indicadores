@@ -1,0 +1,30 @@
+<!-- <option value="">Continente</option>
+{% for loc in children %}
+  <option value="{{ loc.id }}">{{ loc.name }}</option>
+{% endfor %} -->
+
+<option value="">
+  {% if children %}
+    {% if children.0.level == 1 %}
+      Continente
+    {% elif children.0.level == 2 %}
+      País
+    {% elif children.0.level == 3 %}
+      Región
+    {% elif children.0.level == 4 %}
+      Provincia
+    {% elif children.0.level == 5 %}
+      Ciudad
+    {% elif children.0.level == 6 %}
+      Establecimiento
+    {% else %}
+      Seleccione
+    {% endif %}
+  {% else %}
+    Seleccione
+  {% endif %}
+</option>
+
+{% for loc in children %}
+  <option value="{{ loc.id }}" data-level="{{ loc.level }}">{{ loc.name }}</option>
+{% endfor %}
