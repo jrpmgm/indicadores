@@ -15,8 +15,11 @@
                   <label class="form-label fw-bold">Años</label>
                   {% for a in years %}
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="years" value="{{a}}" id="year_{{a}}">
-                      <label class="form-check-label" for="year_{{a}}">{{a}}</label>
+                      
+                      <label class="form-check-label" for="year_{{a}}">
+                        <input class="form-check-input" type="checkbox" name="years" value="{{a}}" id="year_{{a}}">
+                        {{a}}
+                      </label>
                     </div>
                   {% endfor %}
                 </div>
@@ -26,8 +29,10 @@
                 <label class="form-label fw-bold">Meses</label>
                 {% for num, nombre in months %}
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="months" value="{{num}}" id="month_{{num}}">
-                    <label class="form-check-label" for="month_{{num}}">{{nombre}}</label>
+                    <label class="form-check-label" for="month_{{num}}">
+                      <input class="form-check-input" type="checkbox" name="months" value="{{num}}" id="month_{{num}}">
+                      {{nombre}}
+                    </label>
                   </div>
                 {% endfor %}
               </div>

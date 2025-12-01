@@ -228,15 +228,10 @@ html, body {
 }
 
 .mainBaseFilter {
-    width: 70%;
-    height: 92%;
-    background-color: rgb(238, 237, 236);
-    z-index: -9999;
-    pointer-events: none;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    margin-top: 1.5%;
+    width: 100%;
+    background-color: transparent; /* o el color que requieras */
+    position: relative;
+    z-index: 1;     /* importante */
+    pointer-events: auto;  /* permitir clics */
+    margin-bottom: 1rem;
 }
