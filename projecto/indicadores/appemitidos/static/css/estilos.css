@@ -228,10 +228,26 @@ html, body {
 }
 
 .mainBaseFilter {
-    width: 100%;
-    background-color: transparent; /* o el color que requieras */
-    position: relative;
+    width: 70%;
+    /* background-color: rgb(172, 170, 170);
+    position: center; */
     z-index: 1;     /* importante */
     pointer-events: auto;  /* permitir clics */
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    /* justify-content: center;
+    align-items: left; */
+}
+
+.divright {
+    text-align: right;
+    /* width: 10%; */
+}
+
+.divleft {
+    text-align: left;
+    margin-left: 1%;
+    width: 100%;
 }

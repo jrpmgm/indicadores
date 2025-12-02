@@ -3,10 +3,37 @@
 {% block content %}
   <div class="mainBaseFilter">
     <!-- Botón para abrir modal de filtros -->
-    <button class="btn" data-bs-toggle="modal" data-bs-target="#filtersModal">
-        <i class="bi bi-funnel"></i> Filtros
-    </button>
+    <div class="divleft">
+      <div class="contenedor-3d">
+        <span class="etiqueta-borde">Parámetros</span>
+        <div id="agrouptype_div" class="d-flex flex-wrap gap-3">
+          {% for grouptype in groupingtype %}
+            <div class="myClass">
+              <input class="form-check-input" type="radio" name="agrouptype" id="agrouptype_{{ forloop.counter }}" value="{{ grouptype }}" {% if forloop.first %}checked{% endif %} onchange="locgraficarDatos()">
+              <label class="form-check-label" for="agrouptype_{{ forloop.counter }}">
+                {{ grouptype }}
+              </label>
+            </div>
+          {% endfor %}
+
+          <div class="myCombo">
+            <select class="form-select" id="typedocument" onchange="locgraficarDatos()">
+                {% for code, label in typedocuments %}
+                  <option value="{{ code }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+          </div>
+
+          <div class="divright">
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#filtersModal">
+                <i class="bi bi-funnel"></i> Filtros
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  
   <!-- Incluye el modal de filtros -->
   {% include "partials/filtros_modal.html" %}
 
