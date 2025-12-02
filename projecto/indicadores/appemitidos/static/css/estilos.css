@@ -251,3 +251,27 @@ html, body {
     margin-left: 1%;
     width: 100%;
 }
+
+/* --------------------------------------------------
+   🔵 Barra moderna de filtros y parámetros
+-------------------------------------------------- */
+.filters-toolbar {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #cce3fa;
+}
+
+/* Ajuste visual de radios y selects */
+.filters-toolbar .form-check-label {
+    font-weight: 500;
+}
+
+.filters-toolbar select {
+    min-width: 180px;
+    border-radius: 8px;
+}
