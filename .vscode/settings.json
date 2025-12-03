@@ -8,5 +8,5 @@
     "python-envs.pythonProjects": [],
     "python.analysis.extraPaths": [
         "./projecto/indicadores/appemitidos/models"
-    ]
+    ],
 }

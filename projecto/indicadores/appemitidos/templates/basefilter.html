@@ -12,13 +12,13 @@
         <div class="d-flex flex-wrap gap-3" id="agrouptype_div">
             {% for grouptype in groupingtype %}
                 <div class="form-check me-2">
-                    <input class="form-check-input" 
-                           type="radio" 
-                           name="agrouptype" 
-                           id="agrouptype_{{ forloop.counter }}" 
+                    <input class="form-check-input"
+                           type="radio"
+                           name="agrouptype"
+                           id="agrouptype_{{ forloop.counter }}"
                            value="{{ grouptype }}"
                            {% if forloop.first %}checked{% endif %}
-                           onchange="locgraficarDatos()">
+                           onchange="__onGroupTypeChange__(this)">
                     <label class="form-check-label" for="agrouptype_{{ forloop.counter }}">
                         {{ grouptype }}
                     </label>
@@ -36,15 +36,15 @@
     </div>
 
     <!-- Botón FILTROS -->
-    <button class="btn btn-primary d-flex align-items-center gap-2" 
-            data-bs-toggle="modal" 
+    <button class="btn btn-primary d-flex align-items-center gap-2"
+            data-bs-toggle="modal"
             data-bs-target="#filtersModal">
         <i class="bi bi-funnel"></i> Filtros
     </button>
 
 </div>
 
-<!-- 🔵 Modal -->
+<!-- 🔵 Modal de filtros -->
 {% include "partials/filtros_modal.html" %}
 
 <!-- 🔵 Contenido dinámico -->
@@ -52,13 +52,33 @@
     {% block filter_content %}{% endblock %}
 </div>
 
-<!-- 🔵 Evento global -->
+<!-- ---------------------------------------------------------------
+     🔵 Wrapper JS para que cada template hijo defina su lógica
+---------------------------------------------------------------- -->
+<script>
+    function __onGroupTypeChange__(el) {
+        if (window.__customGroupTypeChange__) {
+            window.__customGroupTypeChange__(el);
+        }
+    }
+</script>
+
+{% block on_change_group_type %}
+<script>
+    // Por defecto no hacer nada
+    window.__customGroupTypeChange__ = function(){};
+</script>
+{% endblock %}
+
+<!-- ---------------------------------------------------------------
+     🔵 Evento global para filtros (ya existente)
+---------------------------------------------------------------- -->
 <script>
     document.addEventListener("filters:apply", function (event) {
         const filters = event.detail;
-        console.log("📦 Filtros aplicados (basefilter recibe):", filters);
+        console.log("📦 Filtros aplicados (capturados en basefilter):", filters);
 
-        // Reenvía evento a invoiced.html
+        // Reenvía evento hacia la plantilla hija
         document.dispatchEvent(new CustomEvent("filters:ready", { detail: filters }));
     });
 </script>

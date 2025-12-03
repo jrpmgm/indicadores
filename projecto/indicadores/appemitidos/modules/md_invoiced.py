@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from ..models import Factura, Location
-from appemitidos.generalsdata.constants import TYPE_DOCUMENT_CHOICES
+from appemitidos.generalsdata.constants import TYPE_DOCUMENT_CHOICES, GROUPING_TYPE
 import calendar
 import json
 from django.db.models.functions import ExtractYear, ExtractMonth, ExtractQuarter, ExtractDay
@@ -148,7 +148,7 @@ def invoiced_local(request, pyears, pmonths, pgrouptype, ptypedocument, location
     return datos_list
 
 def consolidado_emitidos(request, pyears, pmonths, pgrouptype, ptypedocument):
-    continente = request.GET.get('continents')
+    """ continente = request.GET.get('continents')
     pais = request.GET.get('countries')
     region = request.GET.get('regions')
     provincia = request.GET.get('provinces')
@@ -164,8 +164,10 @@ def consolidado_emitidos(request, pyears, pmonths, pgrouptype, ptypedocument):
         "city": int(ciudad) if ciudad else None,
         "establishment": int(establecimiento) if establecimiento else None,
         "point": int(punto) if punto else None,
-    }
+    } """
 
+    locationFilters = functions.get_only_location(request)
+    
     datos = invoiced_local(request, pyears, pmonths, pgrouptype, ptypedocument, locationFilters)
     return JsonResponse({'resultados': list(datos)})
 
@@ -205,10 +207,8 @@ def api_invoiced(request):
 
     typedocuments = [('ALL', 'Todos')] + [choice for choice in TYPE_DOCUMENT_CHOICES if choice[0] in ['FAC', 'NC']]
  
-    groupingtype = {'Mensual': 'Mensual', 'Anual': 'Anual', 'Trimestral': 'Trimestral', 'Semestral': 'Semestral'}
-    
     context = functions.get_filtros_context()
-    return render(request, 'appemitidos/invoiced.html', {'years': context["years"], 'months': context["months"], 'typegraph': TYPEGRAPH, 'groupingtype': groupingtype, 'typedocuments': typedocuments})
+    return render(request, 'appemitidos/invoiced.html', {'years': context["years"], 'months': context["months"], 'typegraph': TYPEGRAPH, 'groupingtype': GROUPING_TYPE, 'typedocuments': typedocuments})
 
 def invoiced_by_year_month(filters, year=None, ptypedocument=None):
     """

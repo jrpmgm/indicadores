@@ -3,6 +3,27 @@ from django.db.models import Value
 from ..models import Factura, Location
 import calendar
 
+def get_only_location(request):
+    continente = request.GET.get('continents')
+    pais = request.GET.get('countries')
+    region = request.GET.get('regions')
+    provincia = request.GET.get('provinces')
+    ciudad = request.GET.get('cities')
+    establecimiento = request.GET.get('establishments')
+    punto = request.GET.get('points')
+
+    locationFilters = {
+        "continent": int(continente) if continente else None,
+        "country": int(pais) if pais else None,
+        "region": int(region) if region else None,
+        "province": int(provincia) if provincia else None,
+        "city": int(ciudad) if ciudad else None,
+        "establishment": int(establecimiento) if establecimiento else None,
+        "point": int(punto) if punto else None,
+    }
+
+    return locationFilters
+
 def get_filtros_context():
     """Devuelve los años y meses para los modales de filtro."""
     years_lst = Factura.objects.annotate(year=ExtractYear('date')).values_list('year', flat=True).distinct().order_by('year')
@@ -38,23 +59,16 @@ def obtain_filters(request = None, pyears = None, pmonths = None):
     # ------------------ SECCIÓN DE FILTRO DE UBICACIÓN CORREGIDA ------------------
     # Construye el diccionario de filtros para la tabla Location de forma dinámica
     if request:
-        continente = request.GET.get('continents')
+        """ continente = request.GET.get('continents')
         pais = request.GET.get('countries')
         region = request.GET.get('regions')
         provincia = request.GET.get('provinces')
         ciudad = request.GET.get('cities')
         establecimiento = request.GET.get('establishments')
-        punto = request.GET.get('points')
+        punto = request.GET.get('points') """
+        
+        locationFilters = get_only_location(request)
 
-        locationFilters = {
-            "continent": int(continente) if continente else None,
-            "country": int(pais) if pais else None,
-            "region": int(region) if region else None,
-            "province": int(provincia) if provincia else None,
-            "city": int(ciudad) if ciudad else None,
-            "establishment": int(establecimiento) if establecimiento else None,
-            "point": int(punto) if punto else None,
-        }
         location_filters_dict = {}
 
         if locationFilters.get("continent") and locationFilters["continent"] != -1:

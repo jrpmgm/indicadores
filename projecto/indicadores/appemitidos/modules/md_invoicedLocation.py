@@ -1,9 +1,9 @@
-from django.db.models import Sum, F
+from django.db.models import Sum, Case, When, IntegerField
 from django.http import JsonResponse
-from django.db.models.functions import ExtractYear
+from django.db.models.functions import ExtractYear, ExtractMonth
 from ..models import Factura, Location  # ajusta el import a tu app real
 from ..generalsdata import functions
-#import calendar
+import calendar
 
 def invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters):
     """
@@ -44,7 +44,7 @@ def invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters):
             filtros['location_id__in'] = valid_location_ids
             
     base_query = Factura.objects.filter(**filtros)
-    print("Filtros aplicados:", filtros)
+    
     # === Agrupar ===
     datos = (
         base_query
@@ -116,50 +116,144 @@ def location_details(request, level, value):
 
     return JsonResponse({"resultados": list(datos)})
 
-def invoiced_location_details_by_id(request, level, locId, pyears, pmonths):
-    
-    # 1️⃣ Buscar el nodo seleccionado
+def _format_period_for_output(pgrouptype, year, month_or_bucket=None):
+    """
+    Formatea legiblemente el periodo según tipo de agrupación.
+    - mensual: month_or_bucket = month (1..12) -> "Marzo 2025"
+    - trimestral: month_or_bucket = quarter (1..4) -> "Q1 2025" (o "T1 2025")
+    - semestral: month_or_bucket = semester (1..2) -> "1° Semestre 2025"
+    - anual: month_or_bucket ignored -> "2025"
+    """
+    gt = pgrouptype.lower().strip()
+    if gt == "mensual":
+        if not month_or_bucket:
+            return str(year)
+        nombre = calendar.month_name[int(month_or_bucket)]
+        return f"{nombre} {year}"
+    if gt == "trimestral":
+        return f"Q{int(month_or_bucket)} {year}"
+    if gt == "semestral":
+        return f"{int(month_or_bucket)}° Semestre {year}"
+    if gt == "anual":
+        return str(year)
+    return str(year)
+
+
+def invoiced_location_details_by_id(request, level, locId, pyears, pmonths, pgrouptype):
+    """
+    Devuelve detalles facturación para la localización (id) agrupados por pgrouptype.
+    pgrouptype: 'Mensual','Trimestral','Semestral','Anual' (cualquier case).
+    """
+
+    # 1) nodo
     try:
         node = Location.objects.get(id=locId)
     except Location.DoesNotExist:
         return JsonResponse({"error": "Location not found"}, status=404)
 
-    # 2️⃣ Obtener TODOS los descendientes del nodo (de cualquier nivel)
-    #    Esto permite que al consultar un país se sumen Costa, Sierra, ciudades, establecimientos, etc.
+    # 2) descendientes
     descendants = Location.objects.filter(path__startswith=node.path)
 
-    # 3️⃣ Obtener los totales agrupados por NOMBRE DE LOCALIZACIÓN
+    # 3) filtros (tu función obtain_filters)
     filtros = functions.obtain_filters(None, pyears, pmonths)
 
-    data = (
-        Factura.objects.filter(location__in=descendants, **filtros)
-        .annotate(year=ExtractYear('date'))
-        .values("year")
-        .annotate(
-            subtotal=Sum("subtotal"),
-            iva=Sum("iva"),
-            total=Sum("total")
-        )
-        .order_by("year")
-    )
+    # 4) preparar queryset base
+    qs = Factura.objects.filter(location__in=descendants, **filtros)
 
-    # 4️⃣ Calcular totales generales
+    # 5) según tipo de agrupación agregar anotaciones y agrupar
+    pg = (pgrouptype or "").lower().strip()
+    results = None
+
+    if pg == "mensual":
+        # agregar year y month, agrupar por ambos
+        qs = qs.annotate(month=ExtractMonth("date"))
+        results = (
+            qs.values("month")
+              .annotate(subtotal=Sum("subtotal"), iva=Sum("iva"), total=Sum("total"))
+              .order_by("month")
+        )
+
+    elif pg == "trimestral":
+        # calcular trimestre a partir del mes
+        qs = qs.annotate(month=ExtractMonth("date"))
+        quarter_case = Case(
+            When(month__in=[1,2,3], then=1),
+            When(month__in=[4,5,6], then=2),
+            When(month__in=[7,8,9], then=3),
+            When(month__in=[10,11,12], then=4),
+            output_field=IntegerField(),
+        )
+        qs = qs.annotate(quarter=quarter_case)
+        results = (
+            qs.values("quarter")
+              .annotate(subtotal=Sum("subtotal"), iva=Sum("iva"), total=Sum("total"))
+              .order_by("quarter")
+        )
+
+    elif pg == "semestral":
+        # semestre 1: meses 1-6, semestre 2: meses 7-12
+        qs = qs.annotate(month=ExtractMonth("date"))
+        sem_case = Case(
+            When(month__in=[1,2,3,4,5,6], then=1),
+            When(month__in=[7,8,9,10,11,12], then=2),
+            output_field=IntegerField(),
+        )
+        qs = qs.annotate(semester=sem_case)
+        results = (
+            qs.values("semester")
+              .annotate(subtotal=Sum("subtotal"), iva=Sum("iva"), total=Sum("total"))
+              .order_by("semester")
+        )
+
+    elif pg == "anual" or pg == "año":
+        qs = qs.annotate(year=ExtractYear("date"))
+        results = (
+            qs.values("year")
+              .annotate(subtotal=Sum("subtotal"), iva=Sum("iva"), total=Sum("total"))
+              .order_by("year")
+        )
+
+    else:
+        return JsonResponse({"error": f"Tipo de agrupación inválido: {pgrouptype}"}, status=400)
+
+    # 6) formatear resultados y totales
+    detalles = []
+    for row in results:
+        year = row.get("year")
+        if pg == "mensual":
+            bucket = row.get("month")
+        elif pg == "trimestral":
+            bucket = row.get("quarter")
+        elif pg == "semestral":
+            bucket = row.get("semester")
+        else:  # anual
+            bucket = None
+
+        periodo_text = _format_period_for_output(pgrouptype, year, bucket)
+        detalles.append({
+            "periodo": periodo_text,
+            "subtotal": float(row.get("subtotal") or 0),
+            "iva": float(row.get("iva") or 0),
+            "total": float(row.get("total") or 0),
+        })
+
     totals = {
-        "subtotal": sum((item["subtotal"] or 0) for item in data),
-        "iva": sum((item["iva"] or 0) for item in data),
-        "total": sum((item["total"] or 0) for item in data),
+        "subtotal": sum(d["subtotal"] for d in detalles),
+        "iva": sum(d["iva"] for d in detalles),
+        "total": sum(d["total"] for d in detalles),
     }
 
     return JsonResponse({
         "level": level,
         "location": node.name,
-        "detalles": list(data),
-        "totales": totals
+        "tipo_agrupacion": pgrouptype,
+        "detalles": detalles,
+        "totales": totals,
     })
 
 def consolidado_emitidos_localizacion_data(request, pyears, pmonths, pgrouptype):
     
-    continente = request.GET.get('continents')
+    """ continente = request.GET.get('continents')
     pais = request.GET.get('countries')
     region = request.GET.get('regions')
     provincia = request.GET.get('provinces')
@@ -175,7 +269,9 @@ def consolidado_emitidos_localizacion_data(request, pyears, pmonths, pgrouptype)
         "city": int(ciudad) if ciudad else None,
         "establishment": int(establecimiento) if establecimiento else None,
         "point": int(punto) if punto else None,
-    }
+    } """
+
+    locationFilters = functions.get_only_location(request)
 
     datos = invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters)
 

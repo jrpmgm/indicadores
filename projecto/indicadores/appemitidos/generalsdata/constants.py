@@ -6,3 +6,6 @@ TYPE_DOCUMENT_CHOICES = [
     ('LIQ', 'Liquidación'),
     ('IMP', 'Importación'),
 ]
+
+
+GROUPING_TYPE = {'Mensual': 'Mensual', 'Anual': 'Anual', 'Trimestral': 'Trimestral', 'Semestral': 'Semestral'}

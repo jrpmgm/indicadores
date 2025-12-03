@@ -74,3 +74,11 @@
 {% block extra_js %}
   <script src="{% static 'js/invoicedLocation.js' %}"></script>
 {% endblock %}
+
+{% block on_change_group_type %}
+<script>
+    window.__customGroupTypeChange__ = function(el) {
+        glb_grouptype = el.value;
+    }
+</script>
+{% endblock %}

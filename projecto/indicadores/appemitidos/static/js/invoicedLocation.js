@@ -127,8 +127,7 @@ async function LoadData(pyears, pmonths, pgroupType, params) {
 
 // Llamar al backend
 async function loadLocationDetails(level, locId) {
-
-  const url = `/api/locationDetails/${level}/${locId}/${glb_chkyears}/${glb_chkmonths}/?${glb_params}/`;
+  const url = `/api/locationDetails/${level}/${locId}/${glb_chkyears}/${glb_chkmonths}/${glb_grouptype}/?${glb_params}/`;
   const response = await fetch(url);
   const data = await response.json();
 
@@ -139,7 +138,7 @@ async function loadLocationDetails(level, locId) {
     console.log(item);
     tbody.innerHTML += `
       <tr>
-        <td>${item.year}</td>
+        <td>${item.periodo}</td>
         <td class="myfontRight">${formatterUSD(item.subtotal)}</td>
         <td class="myfontRight">${formatterUSD(item.iva)}</td>
         <td class="myfontRight fw-bold">${formatterUSD(item.total)}</td>
@@ -164,14 +163,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener('filters:apply', async (e) => {
 
     const filters = e.detail;
-    //alert("Aplicando filtros de localización...");
-    //glb_chkyears = filters.years.join(",");
-    //glb_chkmonths = filters.months.join(",");
     glb_params = new URLSearchParams(filters.locations).toString();
     glb_locationFiltersText = Object.values(filters.locations).join(" / ");
 
-    //alert('meses: ' + glb_chkmonths +' anios: ' +  glb_chkyears + 'localidad: ' +  glb_params);
-    
     let pyears = filters.years.join(',');
     let pmonths = filters.months.join(',');
     

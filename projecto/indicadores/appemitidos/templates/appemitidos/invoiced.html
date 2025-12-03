@@ -162,3 +162,11 @@
   }
 </script>
 {% endblock %}
+
+{% block on_change_group_type %}
+<script>
+    window.__customGroupTypeChange__ = function(el) {
+        locgraficarDatos();
+    }
+</script>
+{% endblock %}

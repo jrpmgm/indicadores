@@ -163,6 +163,7 @@ let glb_typedocument = "ALL";
 let glb_locationFiltersText = "";
 let glb_params = "";
 let glb_data = [];
+let glb_grouptype = "Mensual";
 let miGrafico = null;
 
 // 🔸 Función para cargar parámetros iniciales (años, meses, etc.)
