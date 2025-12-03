@@ -5,37 +5,6 @@
   <body>
     <div class="container">
       <h3 class="mb-3"><i class="bi bi-bar-chart"></i>Facturado por periodos</h3>
-      
-      <!-- <div class="d-flex justify-content-end mb-2" id="filtersModal">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filtersModal">
-          <i class="bi bi-funnel"></i> Filtros
-        </button>
-      </div>
-
-      <div class="contenedor-3d">
-        <span class="etiqueta-borde">Parámetros</span>
-         <div class="">
-          <div id="agrouptype_div" class="d-flex flex-wrap gap-3">
-            {% for grouptype in groupingtype %}
-              <div class="myClass">
-                <input class="form-check-input" type="radio" name="agrouptype" id="agrouptype_{{ forloop.counter }}" value="{{ grouptype }}" {% if forloop.first %}checked{% endif %} onchange="locgraficarDatos()">
-                <label class="form-check-label" for="agrouptype_{{ forloop.counter }}">
-                  {{ grouptype }}
-                </label>
-              </div>
-            {% endfor %}
-
-            <div class="myCombo">
-              <select class="form-select" id="typedocument" onchange="locgraficarDatos()">
-                  {% for code, label in typedocuments %}
-                    <option value="{{ code }}">{{ label }}</option>
-                  {% endfor %}
-                </select>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Datos</button>
@@ -165,7 +134,7 @@
 
 {% block on_change_group_type %}
 <script>
-    window.__customGroupTypeChange__ = function(el) {
+    window.__customGroupTypeChange__ = function(el, indicator) {
         locgraficarDatos();
     }
 </script>

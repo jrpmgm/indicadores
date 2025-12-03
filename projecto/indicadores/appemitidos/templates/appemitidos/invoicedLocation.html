@@ -77,8 +77,13 @@
 
 {% block on_change_group_type %}
 <script>
-    window.__customGroupTypeChange__ = function(el) {
-        glb_grouptype = el.value;
+    window.__customGroupTypeChange__ = function(el, indicator) {
+        if (indicator === 'DOCUMENT') {
+            glb_typedocument = el.value;
+            LoadData(glb_chkyears, glb_chkmonths, glb_grouptype, glb_typedocument, glb_params);
+        } else{
+          glb_grouptype = el.value;
+        }
     }
 </script>
 {% endblock %}

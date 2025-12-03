@@ -18,7 +18,7 @@
                            id="agrouptype_{{ forloop.counter }}"
                            value="{{ grouptype }}"
                            {% if forloop.first %}checked{% endif %}
-                           onchange="__onGroupTypeChange__(this)">
+                           onchange="__onGroupTypeChange__(this, 'GROUP')">
                     <label class="form-check-label" for="agrouptype_{{ forloop.counter }}">
                         {{ grouptype }}
                     </label>
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Select de tipo documento -->
-        <select class="form-select" id="typedocument" onchange="locgraficarDatos()">
+        <select class="form-select" id="typedocument" onchange="__onGroupTypeChange__(this, 'DOCUMENT')">
             {% for code, label in typedocuments %}
                 <option value="{{ code }}">{{ label }}</option>
             {% endfor %}
@@ -56,9 +56,14 @@
      🔵 Wrapper JS para que cada template hijo defina su lógica
 ---------------------------------------------------------------- -->
 <script>
-    function __onGroupTypeChange__(el) {
+    function __onGroupTypeChange__(el, indicator) {
         if (window.__customGroupTypeChange__) {
-            window.__customGroupTypeChange__(el);
+            if (indicator === 'DOCUMENT') {
+                glb_typedocument =  el.value;
+            } else {
+                glb_grouptype = el.value;
+            }
+            window.__customGroupTypeChange__(el, indicator);
         }
     }
 </script>

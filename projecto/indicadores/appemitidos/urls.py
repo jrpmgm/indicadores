@@ -31,6 +31,6 @@ urlpatterns = [
     path("locations/<int:parent_id>/", vw_locations.children_options, name="children_by_parent"),
     path("children_options/", vw_locations.children_options, name="children_options"),
     path('api/invoicedLocation/', vw_invoicedLocation.consolidado_emitidos_localizacion_load, name='consolidado_emitidos_localizacion_load'),
-    path('api/invoicedLocationdata/<str:pyears>/<str:pmonths>/<str:pgrouptype>/', md_invoicedLocation.consolidado_emitidos_localizacion_data, name='consolidado_emitidos_localizacion_data'),
-    path("api/locationDetails/<str:level>/<int:locId>/<str:pyears>/<str:pmonths>/<str:pgrouptype>/", md_invoicedLocation.invoiced_location_details_by_id, name="invoiced_location_details_by_id"),
+    path('api/invoicedLocationdata/<str:pyears>/<str:pmonths>/<str:pgrouptype>/<str:ptypedocument>/', md_invoicedLocation.consolidado_emitidos_localizacion_data, name='consolidado_emitidos_localizacion_data'),
+    path("api/locationDetails/<str:level>/<int:locId>/<str:pyears>/<str:pmonths>/<str:pgrouptype>/<str:ptypedocument>/", md_invoicedLocation.invoiced_location_details_by_id, name="invoiced_location_details_by_id"),
 ]

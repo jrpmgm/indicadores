@@ -5,7 +5,7 @@ from ..models import Factura, Location  # ajusta el import a tu app real
 from ..generalsdata import functions
 import calendar
 
-def invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters):
+def invoiced_by_location(pyears, pmonths, pgrouptype, ptypedocument, locationFilters):
     """
     Devuelve un resumen consolidado de facturas agrupado por jerarquía de localización.
     """
@@ -44,7 +44,10 @@ def invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters):
             filtros['location_id__in'] = valid_location_ids
             
     base_query = Factura.objects.filter(**filtros)
-    
+    if ptypedocument == 'FAC':
+        base_query = base_query.filter(subtotal__gt=0)
+    elif ptypedocument == 'NC':
+        base_query = base_query.filter(subtotal__lt=0)
     # === Agrupar ===
     datos = (
         base_query
@@ -129,17 +132,17 @@ def _format_period_for_output(pgrouptype, year, month_or_bucket=None):
         if not month_or_bucket:
             return str(year)
         nombre = calendar.month_name[int(month_or_bucket)]
-        return f"{nombre} {year}"
+        return f"{nombre}"
     if gt == "trimestral":
-        return f"Q{int(month_or_bucket)} {year}"
+        return f"{int(month_or_bucket)}° Trimestre"
     if gt == "semestral":
-        return f"{int(month_or_bucket)}° Semestre {year}"
+        return f"{int(month_or_bucket)}° Semestre"
     if gt == "anual":
         return str(year)
     return str(year)
 
 
-def invoiced_location_details_by_id(request, level, locId, pyears, pmonths, pgrouptype):
+def invoiced_location_details_by_id(request, level, locId, pyears, pmonths, pgrouptype, ptypedocument):
     """
     Devuelve detalles facturación para la localización (id) agrupados por pgrouptype.
     pgrouptype: 'Mensual','Trimestral','Semestral','Anual' (cualquier case).
@@ -159,6 +162,11 @@ def invoiced_location_details_by_id(request, level, locId, pyears, pmonths, pgro
 
     # 4) preparar queryset base
     qs = Factura.objects.filter(location__in=descendants, **filtros)
+
+    if ptypedocument == 'FAC':
+        qs = qs.filter(subtotal__gt=0)
+    elif ptypedocument == 'NC':
+        qs = qs.filter(subtotal__lt=0)
 
     # 5) según tipo de agrupación agregar anotaciones y agrupar
     pg = (pgrouptype or "").lower().strip()
@@ -251,28 +259,10 @@ def invoiced_location_details_by_id(request, level, locId, pyears, pmonths, pgro
         "totales": totals,
     })
 
-def consolidado_emitidos_localizacion_data(request, pyears, pmonths, pgrouptype):
+def consolidado_emitidos_localizacion_data(request, pyears, pmonths, pgrouptype, ptypedocument):
     
-    """ continente = request.GET.get('continents')
-    pais = request.GET.get('countries')
-    region = request.GET.get('regions')
-    provincia = request.GET.get('provinces')
-    ciudad = request.GET.get('cities')
-    establecimiento = request.GET.get('establishments')
-    punto = request.GET.get('points')
-
-    locationFilters = {
-        "continent": int(continente) if continente else None,
-        "country": int(pais) if pais else None,
-        "region": int(region) if region else None,
-        "province": int(provincia) if provincia else None,
-        "city": int(ciudad) if ciudad else None,
-        "establishment": int(establecimiento) if establecimiento else None,
-        "point": int(punto) if punto else None,
-    } """
-
     locationFilters = functions.get_only_location(request)
 
-    datos = invoiced_by_location(pyears, pmonths, pgrouptype, locationFilters)
+    datos = invoiced_by_location(pyears, pmonths, pgrouptype, ptypedocument, locationFilters)
 
     return JsonResponse({"resultados": datos})

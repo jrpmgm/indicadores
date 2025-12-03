@@ -1,7 +1,7 @@
-async function LoadData(pyears, pmonths, pgroupType, params) {
+async function LoadData(pyears, pmonths, pgroupType, ptypedocument, params) {
   
   try {
-    const url = `/api/invoicedLocationdata/${pyears}/${pmonths}/${pgroupType}/?${params}`;
+    const url = `/api/invoicedLocationdata/${pyears}/${pmonths}/${pgroupType}/${ptypedocument}/?${params}`;
     const response = await fetch(url);
     const data = await response.json();
 
@@ -127,7 +127,7 @@ async function LoadData(pyears, pmonths, pgroupType, params) {
 
 // Llamar al backend
 async function loadLocationDetails(level, locId) {
-  const url = `/api/locationDetails/${level}/${locId}/${glb_chkyears}/${glb_chkmonths}/${glb_grouptype}/?${glb_params}/`;
+  const url = `/api/locationDetails/${level}/${locId}/${glb_chkyears}/${glb_chkmonths}/${glb_grouptype}/${glb_typedocument}/?${glb_params}/`;
   const response = await fetch(url);
   const data = await response.json();
 
@@ -158,7 +158,7 @@ async function loadLocationDetails(level, locId) {
 document.addEventListener("DOMContentLoaded", async () => {
 
   await LoadStarParameters();
-  await LoadData(glb_chkyears, glb_chkmonths, "Mensual", glb_params);
+  await LoadData(glb_chkyears, glb_chkmonths, glb_grouptype, glb_typedocument, glb_params);
 
   document.addEventListener('filters:apply', async (e) => {
 
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     const pgroupType = "Mensual"; // puedes hacerlo dinámico si gustas
 
-    await LoadData(glb_chkyears, glb_chkmonths, pgroupType, glb_params);
+    await LoadData(glb_chkyears, glb_chkmonths, glb_grouptype, glb_typedocument, glb_params);
   });
 
   document.addEventListener("click", async (e) => {

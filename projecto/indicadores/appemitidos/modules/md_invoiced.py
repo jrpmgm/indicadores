@@ -148,24 +148,7 @@ def invoiced_local(request, pyears, pmonths, pgrouptype, ptypedocument, location
     return datos_list
 
 def consolidado_emitidos(request, pyears, pmonths, pgrouptype, ptypedocument):
-    """ continente = request.GET.get('continents')
-    pais = request.GET.get('countries')
-    region = request.GET.get('regions')
-    provincia = request.GET.get('provinces')
-    ciudad = request.GET.get('cities')
-    establecimiento = request.GET.get('establishments')
-    punto = request.GET.get('points')
-
-    locationFilters = {
-        "continent": int(continente) if continente else None,
-        "country": int(pais) if pais else None,
-        "region": int(region) if region else None,
-        "province": int(provincia) if provincia else None,
-        "city": int(ciudad) if ciudad else None,
-        "establishment": int(establecimiento) if establecimiento else None,
-        "point": int(punto) if punto else None,
-    } """
-
+ 
     locationFilters = functions.get_only_location(request)
     
     datos = invoiced_local(request, pyears, pmonths, pgrouptype, ptypedocument, locationFilters)
