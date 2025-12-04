@@ -1,10 +1,23 @@
 {% extends "basefilter.html" %}
 
+{% block page_title %}
+    Facturado por periodos
+{% endblock %}
+
+{% block page_title_icon %}
+    <i class="bi bi-receipt-cutoff dashboard-title-icon text-primary"></i>
+{% endblock %}
+
+{% block page_subtitle %}
+    <div class="dashboard-subtitle">Resumen por Año, Mes, Trimestre y Semestre</div>
+{% endblock %}
+
 {% block filter_content %}
 <html>
   <body>
     <div class="container">
-      <h3 class="mb-3"><i class="bi bi-bar-chart"></i>Facturado por periodos</h3>
+      <!-- {% block myTitle %}<h3 class="mb-3"><i class="bi bi-bar-chart"></i>Facturado por periodos</h3>{% endblock %} -->
+      
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Datos</button>

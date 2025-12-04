@@ -1,10 +1,25 @@
 {% extends "basefilter.html" %}
 
+{% block page_title %}
+    Consolidado por Localización
+{% endblock %}
+
+{% block page_title_icon %}
+    <i class="bi bi-receipt-cutoff dashboard-title-icon text-primary"></i>
+{% endblock %}
+
+{% block page_subtitle %}
+    <div class="dashboard-subtitle">Clasificado por Años, Meses y Localización</div>
+{% endblock %}
+
 {% block filter_content %}
 <html>
   <body>
     <div class="container mt-4">
-      <h4 class="text-center mb-3"><i class="bi bi-geo-alt-fill"></i> Consolidado por Localización</h4>
+
+      <!-- {% block myTitle %}
+      <h4 class="text-center mb-3"><i class="bi bi-geo-alt-fill"></i> Consolidado por Localización</h4> 
+      {% endblock %} -->
       
       <div class="table-responsive shadow-sm">
         <table class="table table-bordered table-hover align-middle text-center">

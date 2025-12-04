@@ -1,10 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="page-title-section dashboard-title-container {% block page_title_container_classes %}{% endblock %}">
 
-<!-- 🔵 Barra moderna de parámetros + botón Filtros -->
-<div class="filters-toolbar d-flex flex-wrap align-items-center justify-content-between mb-3">
+    {% block page_title_icon %}
+    <!-- Icono por defecto, puede ser reemplazado -->
+    <i class="bi bi-speedometer2 dashboard-title-icon"></i>
+    {% endblock %}
 
+    <div>
+        <h2 class="dashboard-title {% block page_title_classes %}{% endblock %}">
+            {% block page_title %}
+                Título por defecto
+            {% endblock %}
+        </h2>
+
+        {% block page_subtitle %}
+        <!-- vacio por defecto -->
+        {% endblock %}
+    </div>
+
+</div>
+
+    <!-- 🔵 Barra moderna de parámetros + botón Filtros -->
+ <div class="filters-toolbar d-flex flex-wrap align-items-center justify-content-between mb-3">
+    
     <!-- Parámetros -->
     <div class="d-flex flex-wrap gap-3 align-items-center">
 

@@ -275,3 +275,48 @@ html, body {
     min-width: 180px;
     border-radius: 8px;
 }
+
+.page-title-section {
+    background-color: #f9fafc;
+    border-radius: 5px;
+    padding: 16px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #cce3fa;
+    margin-bottom: 1.5rem;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-title-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #e8e8e8;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    animation: fadeInDown 0.4s ease-out;
+}
+
+.dashboard-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    color: #212529;
+}
+
+.dashboard-title-icon {
+    font-size: 2rem;
+    color: #0d6efd; /* azul bootstrap */
+}
+
+.dashboard-subtitle {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: -4px;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
