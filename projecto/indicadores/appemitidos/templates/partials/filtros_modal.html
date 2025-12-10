@@ -12,10 +12,9 @@
               <div class="columna columna-25">
                 <!-- Años -->
                 <div class="col-md-4">
-                  <label class="form-label fw-bold">Años</label>
+                  <p class="form-label fw-bold mb-1">Años</p>
                   {% for a in years %}
                     <div class="form-check">
-                      
                       <label class="form-check-label" for="year_{{a}}">
                         <input class="form-check-input" type="checkbox" name="years" value="{{a}}" id="year_{{a}}">
                         {{a}}
@@ -26,7 +25,7 @@
               </div>
               <!-- Meses -->
               <div class="columna columna-25">
-                <label class="form-label fw-bold">Meses</label>
+                <p class="form-label fw-bold mb-1">Meses</p>
                 {% for num, nombre in months %}
                   <div class="form-check">
                     <label class="form-check-label" for="month_{{num}}">
@@ -38,10 +37,12 @@
               </div>
               <div class="columna columna-50">
                 <!-- Localización -->
-                <label class="form-label fw-bold">Localización</label>
+                <!-- <label class="form-label fw-bold">Localización</label> -->
+                <p class="form-label fw-bold mb-1">Localización</p>
                 <div class="fila-continentes">
                   <!-- <div class="subcolumna-25"> -->
-                    <label>Continentes</label>
+                    <!-- <label>Continentes</label> -->
+                  <p class="form-label mb-1">Continentes</p>
                   <!-- </div> -->
                   <div class="subcolumna-70">
                     <select id="continents" name="continents" class="form-select mb-2"
@@ -57,7 +58,8 @@
                 </div>
                 <div class="fila-continentes">
                   <!-- <div class="subcolumna-25"> -->
-                    <label>Paises</label>
+                    <!-- <label>Paises</label> -->
+                  <p class="form-label mb-1">Países</p>
                   <!-- </div> -->
                   <div class="subcolumna-70">
                     <select id="countries" name="countries" class="form-select mb-2"
@@ -76,7 +78,8 @@
 
                 <div class="fila-continentes">
                   <!-- <div class="subcolumna-25"> -->
-                    <label>Regiones</label>
+                    <!-- <label>Regiones</label> -->
+                  <p class="form-label mb-1">Regiones</p>
                   <!-- </div> -->
                   <div class="subcolumna-70">
                     <select id="regions" name="regions" class="form-select mb-2"
@@ -93,7 +96,8 @@
                   </div>
                 </div>
                 <div class="fila-continentes">
-                  <label>Provincias</label>
+                  <!-- <label>Provincias</label> -->
+                  <p class="form-label mb-1">Provincias</p>
                   <select id="provinces" name="provinces" class="form-select mb-2"
                           disabled
                           hx-get="{% url 'children_options' %}"
@@ -107,7 +111,8 @@
                   </select>
                 </div>
                 <div class="fila-continentes">
-                  <label>Ciudades</label>
+                  <!-- <label>Ciudades</label> -->
+                  <p class="form-label mb-1">Ciudades</p>
                   <select id="cities" name="cities" class="form-select mb-2"
                           disabled
                           hx-get="{% url 'children_options' %}"
@@ -121,7 +126,8 @@
                   </select>
                 </div>
                 <div class="fila-continentes">
-                  <label>Establecimientos</label>
+                  <!-- <label>Establecimientos</label> -->
+                  <p class="form-label mb-1">Establecimientos</p>
                   <select id="establishments" name="establishments" class="form-select mb-2"
                           disabled
                           hx-get="{% url 'children_options' %}"
@@ -136,7 +142,8 @@
                 </div>
 
                 <div class="fila-continentes">
-                  <label>Puntos</label>
+                  <!-- <label>Puntos</label> -->
+                  <p class="form-label mb-1">Puntos</p>
                   <select id="points" name="points" class="form-select mb-2"
                           disabled
                           hx-get="{% url 'children_options' %}"

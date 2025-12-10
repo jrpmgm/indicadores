@@ -1,0 +1,76 @@
+{% extends "basefilter.html" %}
+{% load static %}
+
+{% block page_title %}
+    Ventas por períodos
+{% endblock %}
+
+{% block filter_content %}
+<div class="container mt-3">
+
+    <h4 class="mb-3">Ventas por períodos</h4>
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <!-- <label>Fecha Desde</label> -->
+            <p class="form-label mb-1">Fecha Desde</p>
+            <input type="date" id="filterDateFrom" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <!-- <label>Fecha Hasta</label> -->
+            <p class="form-label mb-1">Fecha Hasta</p>
+            <input type="date" id="filterDateTo" class="form-control">
+        </div>
+
+        <div class="col-md-3">
+            <!-- <label>Tipo Documento</label> -->
+            <p class="form-label mb-1">Tipo Documento</p>
+            <select id="filterTypeDocument" class="form-select">
+                <option value="ALL">Todos</option>
+                <option value="FAC">Facturas</option>
+                <option value="NC">Notas Crédito</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <!-- <label>Partner</label> -->
+            <p class="form-label mb-1">Partner</p>
+            <select id="filterPartner" class="form-select">
+                <option value="ALL">Todos</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button id="btnApplyFilters" class="btn btn-primary w-100">Aplicar</button>
+        </div>
+    </div>
+    <table id="salesTable" class="table table-hover table-striped align-middle" style="width:100%">
+        <thead class="table-primary">
+        <tr>
+            <th>Fecha</th>
+            <th>Número</th>
+            <th>CI / RUC</th>
+            <th>Partner</th>
+            <th>Estab.</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+
+        <!-- Totales Globales -->
+        <tfoot>
+        <tr class="fw-bold bg-light">
+            <th colspan="5" class="text-end">TOTAL GLOBAL</th>
+            <th class="text-end" id="footer_total"></th>
+        </tr>
+        </tfoot>
+    </table>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+
+<!-- Archivo JS propio -->
+<script src="{% static 'js/sales.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "basefilter.html" %}
+
+{% load static %}
+
+{% block page_title %}Ventas por Periodos{% endblock %}
+{% block page_title_icon %}
+<i class="bi bi-bar-chart-line-fill dashboard-title-icon text-primary"></i>
+{% endblock %}
+{% block page_subtitle %}
+<div class="dashboard-subtitle">Análisis Gerencial por Filtros</div>
+{% endblock %}
+
+{% block filter_content %}
+
+<!-- 🔹 FILTROS -->
+<div class="card p-3 shadow-sm mb-3">
+
+    <div class="row g-2">
+        <div class="col-md-2">
+            <label>Fecha Desde</label>
+            <input type="date" id="filterDateFrom" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <label>Fecha Hasta</label>
+            <input type="date" id="filterDateTo" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label>Tipo Documento</label>
+            <select id="filterTypeDocument" class="form-select">
+                <option value="ALL">Todos</option>
+                <option value="FAC">Facturas</option>
+                <option value="NC">Notas de Crédito</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label>Partner</label>
+            <select id="filterPartner" class="form-select">
+                <option value="ALL">Todos</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button id="btnApplyFilters" class="btn btn-primary w-100">
+                Aplicar Filtros
+            </button>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- 🔹 Localización (7 niveles según tu modelo) -->
+    <div class="row g-2">
+        <div class="col-md-2">
+            <label>Continente</label>
+            <select id="filterLevel1" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+            <label>País</label>
+            <select id="filterLevel2" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+            <label>Región</label>
+            <select id="filterLevel3" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+            <label>Provincia</label>
+            <select id="filterLevel4" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+            <label>Ciudad</label>
+            <select id="filterLevel5" class="form-select"></select>
+        </div>
+        <div class="col-md-2">
+            <label>Establecimiento</label>
+            <select id="filterLevel6" class="form-select"></select>
+        </div>
+        <div class="col-md-2 mt-2">
+            <label>Punto</label>
+            <select id="filterLevel7" class="form-select"></select>
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 KPIs -->
+<div class="row text-center mb-4" id="dashboard-kpis">
+    {% comment %} Spinners generados vía JS {% endcomment %}
+    <div class="col-md-3"><div class="card bg-primary text-white shadow-sm">
+        <div class="card-body"><h6>Total Ventas</h6><h3 class="kpi-value" id="kpiTotalVentas"></h3></div></div>
+    </div>
+    <div class="col-md-3"><div class="card bg-success text-white shadow-sm">
+        <div class="card-body"><h6># Facturas</h6><h3 class="kpi-value" id="kpiFacturas"></h3></div></div>
+    </div>
+    <div class="col-md-3"><div class="card bg-danger text-white shadow-sm">
+        <div class="card-body"><h6># Notas Crédito</h6><h3 class="kpi-value" id="kpiNotas"></h3></div></div>
+    </div>
+    <div class="col-md-3"><div class="card bg-info text-white shadow-sm">
+        <div class="card-body"><h6>Partners Activos</h6><h3 class="kpi-value" id="kpiPartners"></h3></div></div>
+    </div>
+</div>
+
+<!-- 🔹 Gráficos -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <canvas id="chartVentasMes" class="chart-canvas"></canvas>
+    </div>
+    <div class="col-md-6 mb-4">
+        <canvas id="chartTopPartners" class="chart-canvas"></canvas>
+    </div>
+</div>
+
+<!-- 🔹 TABLA DE VENTAS -->
+<table id="salesTable" class="table table-striped table-bordered shadow-sm text-center align-middle" width="100%">
+    <thead class="table-primary">
+        <tr>
+            <th>Fecha</th>
+            <th>Factura</th>
+            <th>Identificación</th>
+            <th>Partner</th>
+            <th>Estab.</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr><th colspan="5" class="text-end">TOTAL</th><th id="footer_total">$0.00</th></tr>
+    </tfoot>
+</table>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/salesDB.js' %}"></script>
+{% endblock %}

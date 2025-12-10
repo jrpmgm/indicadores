@@ -1,10 +1,8 @@
 from django.urls import path
-from .vistas import vw_app_views, vw_test
-from .modules import md_invoiced, md_invoicedLocation
+from .vistas import vw_app_views, vw_salesDB, vw_test
+from .modules import md_invoiced, md_invoicedLocation, md_sales, md_salesDB
 from .vistas import vw_sales  # Import the views module to access the views defined there
 from appemitidos.vistas import vw_locations, vw_invoicedLocation     # Import views from appemitidos
-#from appemitidos.vistas import 
-#from indicadores.appemitidos import  summarysales, update_filters
 
 urlpatterns = [
     path('mostrar_csv/', vw_app_views.mostrar_csv, name='mostrar_csv'),
@@ -18,8 +16,7 @@ urlpatterns = [
     path('api/invoice_excel/', vw_app_views.invoice_excel, name='invoice_excel'),
     path('api/guardar/', vw_app_views.guardar_facturas_ajax, name='guardar'),
     path('api/upload_excel/', vw_app_views.upload_and_process_excel, name='upload_and_process_excel'),
-    path('summary/sales/', vw_sales.summarysales, name='sales'),
-    path('summary/update_filters/', vw_sales.update_filters, name='update_filters'),
+    path('sales/', vw_sales.sales, name='sales'),  # Add the new URL pattern for sales view
     path('test/test/<int:mes>/', vw_test.test, name='test'),  # Add the new URL pattern for loadissued
     path('locationslist/', vw_locations.location_list, name='location_list'),
     path('locations/create/', vw_locations.location_create, name='location_create'),
@@ -33,4 +30,10 @@ urlpatterns = [
     path('api/invoicedLocation/', vw_invoicedLocation.consolidado_emitidos_localizacion_load, name='consolidado_emitidos_localizacion_load'),
     path('api/invoicedLocationdata/<str:pyears>/<str:pmonths>/<str:pgrouptype>/<str:ptypedocument>/', md_invoicedLocation.consolidado_emitidos_localizacion_data, name='consolidado_emitidos_localizacion_data'),
     path("api/locationDetails/<str:level>/<int:locId>/<str:pyears>/<str:pmonths>/<str:pgrouptype>/<str:ptypedocument>/", md_invoicedLocation.invoiced_location_details_by_id, name="invoiced_location_details_by_id"),
+    path('api/partners/', md_sales.load_partners, name='load_partners'),
+    path("api/dashboard/", vw_salesDB.sales_dashboard_view, name="sales_dashboard_view"),
+    path("api/datatables_sales/", md_salesDB.datatables_sales, name="datatables_sales"),
+    path("api/sales_dashboard/", md_salesDB.sales_dashboard, name="sales_dashboard"),
+    path("api/locations/<int:level>/<int:parent_id>/", vw_salesDB.load_locations, name="load_locations"),
+    path("api/locations/<int:level>/", vw_salesDB.load_locations, name="load_locations_level"),
 ]

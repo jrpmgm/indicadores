@@ -48,17 +48,15 @@
 .mycontainer{
     width: 80%;
     height: 50%;
-    /* height: auto;
-    margin: 20px 0 0 0;
-    display: flex; */
     align-items: flex-start; /* ⬅️ Esto alinea a la izquierda */
-    /*margin-top: 5px;*/
 }
 
 .mycanvas{
     width: 70%;
     height: 70%;
-    /* margin-top: 5px; */
+    align-items: center; /* ⬅️ Esto centra el canvas */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .myclss{
@@ -299,7 +297,7 @@ html, body {
 }
 
 .dashboard-title {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 600;
     margin: 0;
     color: #212529;
@@ -311,7 +309,7 @@ html, body {
 }
 
 .dashboard-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.7rem;
     color: #6c757d;
     margin-top: -4px;
 }
