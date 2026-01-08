@@ -87,3 +87,24 @@ canvas {
   color: #333;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
 }
+
+.chart-wrapper {
+    position: relative;
+    height: 350px;   /* 👈 ajusta aquí */
+    width: 100%;
+}
+
+.legend-item.opacity-50 {
+    text-decoration: line-through;
+}
+
+.legend-item.opacity-50 {
+    opacity: 0.45;
+    text-decoration: line-through;
+}
+
+.legend-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 4px;
+    padding-left: 4px;
+}

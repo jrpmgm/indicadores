@@ -36,4 +36,5 @@ urlpatterns = [
     path("api/sales_dashboard/", md_salesDB.sales_dashboard, name="sales_dashboard"),
     path("api/locations/<int:level>/<int:parent_id>/", vw_salesDB.load_locations, name="load_locations"),
     path("api/locations/<int:level>/", vw_salesDB.load_locations, name="load_locations_level"),
+    path("api/sales_date_range/", md_salesDB.get_date_range, name="get_date_range"),
 ]

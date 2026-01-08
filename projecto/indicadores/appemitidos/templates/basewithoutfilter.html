@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-title-section dashboard-title-container {% block page_title_container_classes %}{% endblock %}">
+
+    {% block page_title_icon %}
+    <!-- Icono por defecto, puede ser reemplazado -->
+    <i class="bi bi-speedometer2 dashboard-title-icon"></i>
+    {% endblock %}
+
+    <div>
+        <h2 class="dashboard-title {% block page_title_classes %}{% endblock %}">
+            {% block page_title %}
+                Título por defecto
+            {% endblock %}
+        </h2>
+
+        {% block page_subtitle %}
+        <!-- vacio por defecto -->
+        {% endblock %}
+    </div>
+
+</div>
+
+<!-- 🔵 Contenido dinámico -->
+<div id="main-filter-content">
+    {% block filter_content %}{% endblock %}
+</div>
+
+<!-- ---------------------------------------------------------------
+     🔵 Wrapper JS para que cada template hijo defina su lógica
+---------------------------------------------------------------- -->
+<script>
+    /* function __onGroupTypeChange__(el, indicator) {
+        if (window.__customGroupTypeChange__) {
+            if (indicator === 'DOCUMENT') {
+                glb_typedocument =  el.value;
+            } else {
+                glb_grouptype = el.value;
+            }
+            window.__customGroupTypeChange__(el, indicator);
+        }
+    } */
+</script>
+
+{% block on_change_group_type %}
+<script>
+    // Por defecto no hacer nada
+    window.__customGroupTypeChange__ = function(){};
+</script>
+{% endblock %}
+
+<!-- ---------------------------------------------------------------
+     🔵 Evento global para filtros (ya existente)
+---------------------------------------------------------------- -->
+<script>
+    document.addEventListener("filters:apply", function (event) {
+        const filters = event.detail;
+        console.log("📦 Filtros aplicados (capturados en basefilter):", filters);
+
+        // Reenvía evento hacia la plantilla hija
+        document.dispatchEvent(new CustomEvent("filters:ready", { detail: filters }));
+    });
+</script>
+
+{% endblock %}
